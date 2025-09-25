@@ -288,23 +288,64 @@
 
             const songInfo = `🎵: ${artist} - ${title}\n✍️: ${lyricist}\n🎼: ${composer}\n\nMusic and Lyrics © : Stiftelsen Skjulte Skatters Forlag\n🔗: hiddentreasures.org`;
 
-            navigator.clipboard.writeText(songInfo).then(function() {
-                // Show success feedback
-                const button = document.querySelector('button[onclick="copySongInfo()"]');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
-                button.classList.remove('btn-info');
-                button.classList.add('btn-success');
+            // Check if modern Clipboard API is available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(songInfo).then(function() {
+                    showCopySuccess();
+                }).catch(function(err) {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopyTextToClipboard(songInfo);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(songInfo);
+            }
+        }
 
-                setTimeout(function() {
-                    button.innerHTML = originalText;
-                    button.classList.remove('btn-success');
-                    button.classList.add('btn-info');
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Failed to copy: ', err);
-                alert('Failed to copy to clipboard. Please try again.');
-            });
+        function fallbackCopyTextToClipboard(text) {
+            // Create a temporary textarea element
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+
+            // Make it invisible but selectable
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+
+            // Select and copy
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess();
+                } else {
+                    alert('Failed to copy to clipboard. Please copy manually:\n\n' + text);
+                }
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+                alert('Failed to copy to clipboard. Please copy manually:\n\n' + text);
+            }
+
+            // Clean up
+            document.body.removeChild(textArea);
+        }
+
+        function showCopySuccess() {
+            // Show success feedback
+            const button = document.querySelector('button[onclick="copySongInfo()"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+            button.classList.remove('btn-info');
+            button.classList.add('btn-success');
+
+            setTimeout(function() {
+                button.innerHTML = originalText;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-info');
+            }, 2000);
         }
     </script>
 </body>
