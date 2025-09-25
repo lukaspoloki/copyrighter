@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit MP3 Tags - {{ filename }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .tag-card {
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .tag-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        .tag-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 15px;
+        }
+        .title-icon { background: linear-gradient(45deg, #667eea, #764ba2); color: white; }
+        .artist-icon { background: linear-gradient(45deg, #f093fb, #f5576c); color: white; }
+        .lyricist-icon { background: linear-gradient(45deg, #4facfe, #00f2fe); color: white; }
+        .composer-icon { background: linear-gradient(45deg, #43e97b, #38f9d7); color: white; }
+        .copyright-icon { background: linear-gradient(45deg, #a8edea, #fed6e3); color: black; }
+        .btn-success {
+            background: linear-gradient(45deg, #43e97b, #38f9d7);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+        }
+        .btn-secondary {
+            background: rgba(108, 117, 125, 0.8);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(108, 117, 125, 0.9);
+            transform: translateY(-2px);
+        }
+        .file-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .preview-filename {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .edit-icon {
+            font-size: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <i class="fas fa-edit text-white mb-3 edit-icon"></i>
+            <h1 class="display-5 text-white mb-3">Edit MP3 Tags</h1>
+        </div>
+
+        <div class="card p-4">
+            <div class="card-body">
+                <!-- File Info -->
+                <div class="file-info">
+                    <h5 class="mb-2"><i class="fas fa-file-audio text-primary me-2"></i>Current File: {{ filename }}</h5>
+                    <div class="preview-filename">
+                        <strong>Download filename:</strong> {{ tags.title or 'Untitled' }} ©️ Stiftelsen Skjulte Skatter Forlag.mp3
+                    </div>
+                </div>
+
+                <form method="post">
+                    <div class="row">
+                        <!-- Title -->
+                        <div class="col-md-6 mb-3">
+                            <div class="tag-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon title-icon">
+                                        <i class="fas fa-heading"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title"
+                                               value="{{ tags.title }}" placeholder="Enter song title">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Artist -->
+                        <div class="col-md-6 mb-3">
+                            <div class="tag-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon artist-icon">
+                                        <i class="fas fa-microphone"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="artist" class="form-label">Artist</label>
+                                        <input type="text" class="form-control" id="artist" name="artist"
+                                               value="{{ tags.artist }}" placeholder="Enter artist name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lyricist -->
+                        <div class="col-md-6 mb-3">
+                            <div class="tag-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon lyricist-icon">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="lyricist" class="form-label">Lyricist (Author)</label>
+                                        <input type="text" class="form-control" id="lyricist" name="lyricist"
+                                               value="{{ tags.lyricist }}" placeholder="Enter lyricist name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Composer -->
+                        <div class="col-md-6 mb-3">
+                            <div class="tag-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon composer-icon">
+                                        <i class="fas fa-music"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="composer" class="form-label">Composer</label>
+                                        <input type="text" class="form-control" id="composer" name="composer"
+                                               value="{{ tags.composer }}" placeholder="Enter composer name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Copyright -->
+                        <div class="col-md-6 mb-3">
+                            <div class="tag-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon copyright-icon">
+                                        <i class="fas fa-copyright"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="copyright" class="form-label">Copyright</label>
+                                        <input type="text" class="form-control" id="copyright" name="copyright"
+                                               value="{{ tags.copyright or 'Copyright © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved.' }}"
+                                               placeholder="Copyright © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved.">
+                                        <small class="text-muted">If left empty, default copyright will be used</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment (automatically set) -->
+                        <div class="col-12 mb-3">
+                            <div class="tag-card" style="background: linear-gradient(45deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.1));">
+                                <div class="d-flex align-items-center">
+                                    <div class="tag-icon" style="background: linear-gradient(45deg, #ffc107, #fd7e14); color: black;">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label for="comment" class="form-label">Comment (automatically set)</label>
+                                        <input type="text" class="form-control" id="comment" name="comment"
+                                               value="www.activechristianity.org" readonly
+                                               style="background-color: #f8f9fa; cursor: not-allowed;">
+                                        <small class="text-muted">This field is automatically set to the website URL</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success me-3">
+                            <i class="fas fa-download me-2"></i>Download Modified MP3
+                        </button>
+                        <button type="button" class="btn btn-info me-3" onclick="copySongInfo()">
+                            <i class="fas fa-copy me-2"></i>Copy Song Info
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Upload Different File
+                        </a>
+                    </div>
+                </form>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %} mt-3" role="alert">
+                                <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %} me-2"></i>
+                                {{ message }}
+                                {% if category == 'success' %}
+                                    <br><small class="text-muted">All your tag fields including Lyricist, Composer, and Comment have been saved to the file.</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update preview filename when title changes
+        document.getElementById('title').addEventListener('input', function() {
+            const title = this.value.trim() || 'Untitled';
+            const preview = document.querySelector('.preview-filename strong');
+            preview.textContent = 'Download filename: ' + title + ' ©️ Stiftelsen Skjulte Skatter Forlag.mp3';
+        });
+
+        // Auto-resize textareas if needed (for future expansion)
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+        });
+
+        // Copy song info to clipboard
+        function copySongInfo() {
+            const title = document.getElementById('title').value.trim() || 'Untitled';
+            const artist = document.querySelector('input[name="artist"]').value.trim() || 'Unknown Artist';
+            const lyricist = document.getElementById('lyricist').value.trim() || 'Unknown';
+            const composer = document.getElementById('composer').value.trim() || 'Unknown';
+
+            const songInfo = `🎵: ${artist} - ${title}\n✍️: ${lyricist}\n🎼: ${composer}\n\nMusic and Lyrics © : Stiftelsen Skjulte Skatters Forlag\n🔗: hiddentreasures.org`;
+
+            navigator.clipboard.writeText(songInfo).then(function() {
+                // Show success feedback
+                const button = document.querySelector('button[onclick="copySongInfo()"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                button.classList.remove('btn-info');
+                button.classList.add('btn-success');
+
+                setTimeout(function() {
+                    button.innerHTML = originalText;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-info');
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy to clipboard. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
