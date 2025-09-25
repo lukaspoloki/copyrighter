@@ -235,8 +235,8 @@ def edit_tags(session_id):
         tagger.set_tag('composer', request.form.get('composer', ''))
         tagger.set_tag('copyright', copyright_value)
 
-        # Always set the comment to www.activechristianity.org
-        tagger.set_tag('comment', 'www.activechristianity.org')
+        # Always set the comment to https://activechristianity.org
+        tagger.set_tag('comment', 'https://activechristianity.org')
 
         # Create new file with copyright in filename
         output_path = os.path.join(app.config['UPLOAD_FOLDER'], 'output.mp3')

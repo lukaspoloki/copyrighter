@@ -57,7 +57,7 @@ Then open your browser to `http://localhost:8000`
 - **Lyricist (TEXT)**: Writer of the lyrics (author)
 - **Composer (TCOM)**: Composer of the melody
 - **Copyright (TCOP)**: Copyright information (defaults to "Copyright © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved.")
-- **Comment (COMM)**: Automatically set to "www.activechristianity.org"
+- **Comment (COMM)**: Automatically set to "https://activechristianity.org"
 
 ## Dependencies
 
