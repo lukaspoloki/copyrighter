@@ -1,3 +1,5 @@
+![ezgif-74f18015b0a0ed](https://github.com/user-attachments/assets/e2d36ab0-8f1c-49ba-86ed-7f222193134b)
+
 # MP3 Tag Editor
 
 A web application to read and modify ID3 tags in MP3 files. Perfect for managing metadata like title, artist, lyricist (author), composer, text and melody, and copyright information. Creates a new file with copyright in the filename.
