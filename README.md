@@ -1,8 +1,10 @@
-![ezgif-74f18015b0a0ed](https://github.com/user-attachments/assets/e2d36ab0-8f1c-49ba-86ed-7f222193134b)
-
 # MP3 Tag Editor
 
+![ezgif-74f18015b0a0ed](https://github.com/user-attachments/assets/e2d36ab0-8f1c-49ba-86ed-7f222193134b)
+
 A web application to read and modify ID3 tags in MP3 files. Perfect for managing metadata like title, artist, lyricist (author), composer, text and melody, and copyright information. Creates a new file with copyright in the filename.
+
+> *This is my private initiative and not official guidelines on how to credit. For official information, visit: <https://ham.no/kreditering-et-misjonsoppdrag-i-var-tid>/*
 
 ## Features
 
@@ -57,7 +59,7 @@ Then open your browser to `http://localhost:8000`
 - **Lyricist (TEXT)**: Writer of the lyrics (author)
 - **Composer (TCOM)**: Composer of the melody
 - **Copyright (TCOP)**: Copyright information (defaults to "Copyright © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved.")
-- **Comment (COMM)**: Automatically set to "https://activechristianity.org"
+- **Comment (COMM)**: Automatically set to "<https://activechristianity.org>"
 
 ## Dependencies
 
